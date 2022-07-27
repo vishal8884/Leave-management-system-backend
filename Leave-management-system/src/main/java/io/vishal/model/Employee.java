@@ -47,7 +47,9 @@ public class Employee {
 	@Column(nullable = false)
 	private String role;
 	
-    private Date leaveTakenDates;    //use list and one to many or many to one...eed to figure out
+	@ManyToOne(cascade = CascadeType.ALL)        //this seems correct as now
+	@JoinColumn(name = "leave_taken_dates_id" , referencedColumnName = "leaveTakenDatesId")      
+	private LeaveTakenDates leaveTakenDates;
 	
 	private Integer TotalnoOfLeavesTaken;
 	
