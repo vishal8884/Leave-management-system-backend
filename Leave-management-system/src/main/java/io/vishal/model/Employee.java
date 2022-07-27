@@ -13,8 +13,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.SequenceGenerator;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -29,19 +31,32 @@ import lombok.NoArgsConstructor;
 public class Employee {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@SequenceGenerator(initialValue = 887454 , name = "employee_sequence_generator")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "employee_sequence_generator")
 	private Long employeeId;
+	
+	@Column(nullable = false)
 	private String firstName;
+	
+	@Column(nullable = false)
 	private String lastName;
+	
+	@Column(nullable = false)
 	private String email;
+	
+	@Column(nullable = false)
 	private String role;
 	
-	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER , optional = false)   //this says that already mapped by employee attribute in Leave.class
-	@JoinColumn(name = "leave_id", referencedColumnName = "leaveId")
-	private Leave leave;
+    private Date leaveTakenDates;    //use list and one to many or many to one...eed to figure out
 	
-	@ManyToMany(cascade = CascadeType.ALL)
-	@JoinTable(name = "leave_employee_mapping", joinColumns = @JoinColumn(name = "employee_id", referencedColumnName = "employeeId") ,
-	                                            inverseJoinColumns = @JoinColumn(name = "leave_dates_id", referencedColumnName = "leaveDate"))
-	private List<LeaveDate> leaveDates;
+	private Integer TotalnoOfLeavesTaken;
+	
+//	@ManyToOne(cascade = CascadeType.ALL)
+//	@JoinColumn(name = "leave_date_id" , referencedColumnName = "leaveDateId")
+//	private LeaveDate leaveDate;
+	
+//	@ManyToMany(cascade = CascadeType.ALL)
+//	@JoinTable(name = "leave_employee_mapping", joinColumns = @JoinColumn(name = "employee_id", referencedColumnName = "employeeId") ,
+//	                                            inverseJoinColumns = @JoinColumn(name = "leave_dates_id", referencedColumnName = "leaveDate"))
+//	private List<LeaveDate> leaveDates;
 }
